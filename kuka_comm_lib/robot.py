@@ -9,12 +9,9 @@ from kuka_comm_lib.positions import CartesianPos
 
 class KukaRobot:
     _connection: RobotConnection
-    # This is used to ensure any other parts of the program can not inturrupt methods that should run as if they are sync.
-    # _blocking_loop: asyncio.AbstractEventLoop
 
     def __init__(self, host: str, port: int = 7000) -> None:
         self._connection = RobotConnection(host, port)
-        # self._blocking_loop = asyncio.new_event_loop()
         pass
 
     def move_relative(
