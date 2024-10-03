@@ -1,4 +1,4 @@
-import kuka_comm_lib, asyncio
+import kuka_comm_lib
 
 
 def main():
@@ -6,9 +6,9 @@ def main():
     robot = kuka_comm_lib.KukaRobot(input("Robot Hostname: "))
     try:
         robot.connect()
-    except:
-        print("Failed to connect to robot")
-        return
+    except OSError as e:
+        print("Failed to connect to robot, ", e.strerror)
+        raise e
 
     try:
         while True:
