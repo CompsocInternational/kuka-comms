@@ -16,9 +16,9 @@ class KukaRobot:
 
     def move_relative(
         self,
-        x_rel: float,
-        y_rel: float,
-        z_rel: float,
+        x_rel: Optional[float] = None,
+        y_rel: Optional[float] = None,
+        z_rel: Optional[float] = None,
         speed: Optional[float] = None,
         wait_until_complete: bool = False,
     ):
@@ -30,9 +30,9 @@ class KukaRobot:
 
     async def move_relative_async(
         self,
-        x_rel: float,
-        y_rel: float,
-        z_rel: float,
+        x_rel: Optional[float] = None,
+        y_rel: Optional[float] = None,
+        z_rel: Optional[float] = None,
         speed: Optional[float] = None,
         wait_until_complete: bool = False,
     ):
@@ -41,9 +41,9 @@ class KukaRobot:
         """
 
         x, y, z, a, b, c = await self.get_current_position_async()
-        new_x = x + x_rel
-        new_y = y + y_rel
-        new_z = z + z_rel
+        new_x = x + (x_rel or 0)
+        new_y = y + (y_rel or 0)
+        new_z = z + (z_rel or 0)
 
         target = CartesianPos(new_x, new_y, new_z, a, b, c)
 
