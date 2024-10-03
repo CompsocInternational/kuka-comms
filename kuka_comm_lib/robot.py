@@ -19,11 +19,12 @@ class KukaRobot:
         x_rel: float,
         y_rel: float,
         z_rel: float,
+        speed: Optional[float] = None,
         wait_until_complete: bool = False,
     ):
         asyncio.run(
             self.move_relative_async(
-                x_rel, y_rel, z_rel, wait_until_complete=wait_until_complete
+                x_rel, y_rel, z_rel, speed=speed, wait_until_complete=wait_until_complete
             )
         )
 
@@ -32,6 +33,7 @@ class KukaRobot:
         x_rel: float,
         y_rel: float,
         z_rel: float,
+        speed: Optional[float] = None,
         wait_until_complete: bool = False,
     ):
         """
@@ -45,30 +47,32 @@ class KukaRobot:
 
         target = CartesianPos(new_x, new_y, new_z, a, b, c)
 
-        await self._goto(target, wait_until_complete=wait_until_complete)
+        await self._goto(target, speed=speed, wait_until_complete=wait_until_complete)
 
     def goto(
         self,
-        x: Optional[float],
-        y: Optional[float],
-        z: Optional[float],
-        a: Optional[float],
-        b: Optional[float],
-        c: Optional[float],
+        x: Optional[float] = None,
+        y: Optional[float] = None,
+        z: Optional[float] = None,
+        a: Optional[float] = None,
+        b: Optional[float] = None,
+        c: Optional[float] = None,
+        speed: Optional[float] = None,
         wait_until_complete: bool = False,
     ):
         asyncio.run(
-            self.goto_async(x, y, z, a, b, c, wait_until_complete=wait_until_complete)
+            self.goto_async(x, y, z, a, b, c, speed=speed, wait_until_complete=wait_until_complete)
         )
 
     async def goto_async(
         self,
-        x: Optional[float],
-        y: Optional[float],
-        z: Optional[float],
-        a: Optional[float],
-        b: Optional[float],
-        c: Optional[float],
+        x: Optional[float] = None,
+        y: Optional[float] = None,
+        z: Optional[float] = None,
+        a: Optional[float] = None,
+        b: Optional[float] = None,
+        c: Optional[float] = None,
+        speed: Optional[float] = None,
         wait_until_complete: bool = False,
     ):
         """
@@ -85,9 +89,7 @@ class KukaRobot:
             b or current.b,
             c or current.c,
         )
-        await self._goto(target, wait_until_complete=wait_until_complete)
-
-        pass
+        await self._goto(target, speed=speed, wait_until_complete=wait_until_complete)
 
     def get_current_position(self) -> CartesianPos:
         return asyncio.run(self.get_current_position_async())
@@ -158,14 +160,16 @@ class KukaRobot:
             raise ValueError(f'Invalid position string: "{pos_string}"')
         return AxisPos(a1, a2, a3, a4, a5, a6)
 
-    async def _goto(self, target: CartesianPos, wait_until_complete: bool = False):
+    async def _goto(self, target: CartesianPos, speed: Optional[float] = None, wait_until_complete: bool = False):
         """
         *internal*
         move to cartesian coordinates
         """
         if not await self.is_ready_to_move_async():
             raise RobotAlreadyMovingError("Robot is already moving")
-
+        if speed is not None:
+            await self.set_speed_async(speed)
+        
         pos_value_string = f"{{POS: X {target.x}, Y {target.y}, Z {target.z}, A {target.a}, B {target.b}, C {target.c}}}"
         await self._connection.set_variable("RUN_FRAME", pos_value_string)
         if wait_until_complete:
@@ -201,3 +205,10 @@ class KukaRobot:
 
     async def disconnect_async(self) -> None:
         await self._connection.disconnect()
+
+    def set_speed(self, speed: float) -> None:
+        asyncio.run(self.set_speed_async(speed))
+
+    async def set_speed_async(self, speed: float) -> None:
+        # note: SPEEED is not a typo
+        await self._connection.set_variable("SPEEED", str(speed)) 
