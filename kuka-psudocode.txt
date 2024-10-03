@@ -1,0 +1,30 @@
+# psuedo code for kuka robotics movement
+# TODO: replace with real KRL program.
+
+global RUN_FRAME
+
+var LAST_RUN_FRAME, MOVE_IN_PROGRESS
+
+MOVE_IN_PROGRESS = 0
+LAST_RUN_FRAME = inital position
+
+loop
+    if not LAST_RUN_FRAME 
+        do_move()
+        continue
+    endif
+    if RUN_FRAME != LAST_RUN_FRAME
+        do_move()
+        continue
+    endif
+    sleep(0.1) (maybe?)
+endloop
+
+function do_move()
+    MOVE_IN_PROGRESS = 1
+    lin RUN_FRAME
+    LAST_RUN_FRAME = RUN_FRAME
+    MOVE_IN_PROGRESS = 0
+endfunction
+
+
