@@ -6,8 +6,7 @@ authors = ["Isaac", "Max"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-# this is only because its the default on my laptop, can be changed later i think
-python = "^3.11"
+python = "^3.9"
 
 
 [tool.poetry.group.dev.dependencies]
