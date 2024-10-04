@@ -91,12 +91,12 @@ class KukaRobot:
             raise ValueError("No current position")
 
         target = CartesianPos(
-            x or current.x,
-            y or current.y,
-            z or current.z,
-            a or current.a,
-            b or current.b,
-            c or current.c,
+            x if x is not None else current.x,
+            y if y is not None else current.y,
+            z if z is not None else current.z,
+            a if a is not None else current.a,
+            b if b is not None else current.b,
+            c if c is not None else current.c,
         )
         await self._goto(target, speed=speed, wait_until_complete=wait_until_complete)
 
