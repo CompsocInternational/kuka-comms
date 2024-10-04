@@ -86,6 +86,9 @@ class KukaRobot:
         """
 
         current = await self.get_current_position_async()
+        
+        if current is None:
+            raise ValueError("No current position")
 
         target = CartesianPos(
             x or current.x,
