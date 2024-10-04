@@ -183,17 +183,11 @@ class KukaRobot:
         if speed is not None:
             await self.set_speed_async(speed)
         
-        print("start move, set IS_RUNNING to 1")
         await self._connection.set_variable("IS_RUNNING", "1")
-        
         pos_value_string = f"{{POS: X {target.x}, Y {target.y}, Z {target.z}, A {target.a}, B {target.b}, C {target.c}}}"
-        print(pos_value_string)
         await self._connection.set_variable("RUN_FRAME", pos_value_string)
-        print("set RUN_FRAME")
         if wait_until_complete:
-            print("start wait")
             await self.wait_until_ready_to_move_async()
-            print("wait_until_ready_to_move_async done")
 
     def wait_until_ready_to_move(self):
         return self._asyncioloop.run_until_complete(self.wait_until_ready_to_move_async())
@@ -209,7 +203,6 @@ class KukaRobot:
         in_progress = await self._connection.get_variable("IS_RUNNING")
         if in_progress == "0":
             return True
-        print("Robot is already moving: " + in_progress)
         return False
 
     def connect(self) -> None:
