@@ -1,3 +1,4 @@
+from typing import Optional
 from kuka_comm_lib.exceptions import RobotNotConnectedError
 
 
@@ -9,8 +10,8 @@ class RobotConnection:
     host: str
     port: int
 
-    _conn_reader: asyncio.StreamReader | None
-    _conn_writer: asyncio.StreamWriter | None
+    _conn_reader: Optional[asyncio.StreamReader] = None
+    _conn_writer: Optional[asyncio.StreamWriter] = None
 
     channel_lock: asyncio.Lock
 
@@ -95,4 +96,4 @@ class RobotConnection:
             header = await self.reader.read(5)
             (tag, length, msgtype) = struct.unpack("!HHB", header)
             body = await self.reader.read(length - 1)
-        print(body[2:-3].decode("utf-16"))
+        # print(body[2:-3].decode("utf-16"))

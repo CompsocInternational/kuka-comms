@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuka_comm_lib"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = ["Isaac", "Max"]
 readme = "README.md"

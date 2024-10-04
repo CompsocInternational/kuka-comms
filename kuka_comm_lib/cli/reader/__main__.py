@@ -17,6 +17,7 @@ async def main():
             pos = await robot.get_current_position_async()
             print(f"Axis: {axis}")
             print(f"Position: {pos}")
+            await asyncio.sleep(0.5)
     finally:
         robot.disconnect()
 
